@@ -2,6 +2,8 @@
 #include <stdlib.h>  
 #include <cstddef>
 #include <iostream>
+#include <thread>
+#include <atomic>
 
 using namespace std;
 
@@ -51,6 +53,9 @@ public:
 
   void PushLeft(int val)
   {
+    __transaction_atomic{
+
+    
     QNode *qn = (QNode*) malloc(sizeof(QNode));
     qn->val=val;
 //    cout<<"value of new node \n";
@@ -79,10 +84,12 @@ public:
       //cout<<"left sentienel pointed to \n";
       //cout<<leftSentinel->right->val;
     }
+    }
   }
 
   void PushRight(int val)
   {
+    __transaction_atomic{
     QNode *qn = (QNode*) malloc(sizeof(QNode));
     qn->val=val;
   //  cout<<"created new node with new value \n";
@@ -102,7 +109,6 @@ public:
     }
     else{
       //cout<<"inside non-empty node\n";
-
       QNode *oldrightMostNode=rightSentinel->left;
       oldrightMostNode->right=qn;
       qn->left=oldrightMostNode;
@@ -113,11 +119,14 @@ public:
       //cout<<"\n";
       //cout<<"left sentinel pointed to \n";
       //cout<<leftSentinel->right->val;
+      }
     }
   }
 
   int PopLeft()
   {
+      __transaction_atomic {
+
     //if there is no any QNode in between rightSentinel and left Sentinel
       if(leftSentinel->right==rightSentinel){
       return -1;
@@ -129,10 +138,13 @@ public:
       oldleftMostNode->right->left=leftSentinel;
       return oldleftMostNode->val;
     }
+    }
   }
 
   int PopRight()
   {
+  __transaction_atomic {
+
     //if there is no any QNode in between rightSentinel and left Sentinel
       if(leftSentinel->right==rightSentinel){
       return -1;
@@ -145,22 +157,38 @@ public:
       return oldrightMostNode->val;
     }
   }
+  }
 
 };
 
-int main (){
-DQueue d;
-d.PushRight(2);
-d.PushRight(3);
-d.PushRight(4);
-d.PushLeft(5);
-cout<<"pop left with value \n";
-cout<<d.PopLeft();
-cout<<"\n";
-cout<<"pop right with value\n";
-cout<<d.PopRight();
-cout<<"\n";
-cout<<"pop right with value\n";
-cout<<d.PopRight();
-return 0;
+int main()
+{
+  int num_threads = 2;
+  // create and join threads
+  std::thread *t = new std::thread[num_threads];
+  DQueue d;
+  for (int i = 0; i < num_threads; ++i)
+  {
+    // call void calcArea(int tn, int startidx, int num_trapezes_per_thread, double step)
+    //t[i] = std::thread(calcArea, i, num_threads, num_trapezes, step);
+ t[i] = std::thread(&DQueue::PushLeft,d,4);
+  }
+
+  for (int i = 0; i < num_threads; ++i)
+  {
+    t[i].join();
+  }
+  d.PushRight(2);
+  d.PushRight(3);
+  d.PushRight(4);
+  d.PushLeft(5);
+  cout << "pop left with value \n";
+  cout << d.PopLeft();
+  cout << "\n";
+  cout << "pop right with value\n";
+  cout << d.PopRight();
+  cout << "\n";
+  cout << "pop right with value\n";
+  cout << d.PopRight();
+  return 0;
 }
