@@ -1,0 +1,27 @@
+#to compile 
+g++ -Wall -std=c++11 -pthread -fgnu-tm transactions.cpp -o tran.o
+
+
+#Output
+diff: 0
+
+
+#2 
+Strong isolation
+
+
+#3
+
+In each execution, value of diff was different
+2226453, 669411, 2257345, 2187450
+
+#4
+Since hadware doesn't have semantics defined for data race condition.
+It is programmer job to annotate block or varaiale so that two or more threads doesn't work in same memmory localtion
+Adding hadware logic is complicated.
+ I think compiler writers will generally refuse to promise that it cannot happen. 
+ It can be the result of very standard optimization techniques. 
+ As far as I know, precluding this behavior with certainty would require significant optimizer 
+ redesign.
+
+Exercise 2 Double-Ended Queue
