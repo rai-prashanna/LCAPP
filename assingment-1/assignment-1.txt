@@ -26,8 +26,25 @@ Adding hadware logic is complicated.
 
 Exercise 2 Double-Ended Queue
 
-#Semantic 4 
+#Semantic 4.1/4.2 
 Trancttion is commited even after exception
 After exception the value of update :: 1 
 after unitincrement thread , the value of update :: 3 
  after unitdecrement thread , the value of update :: 3 
+
+ #Semantic 4.3
+ What is the semantics of the cancel-and-throw statement
+ to rollback all side effects of an atomic
+transaction statement (atomic function transaction block)
+
+#Semantic 5 Nesting
+__transaction_atomic blocks, and a __transaction_cancel
+statement to abort atomic transactions (see Section 4.4 and Section 8, respectively, of the
+see Section 4.4 and Section 8, respectively,
+Do not consider the outer attribute (Section 8.1) for this exercise.
+
+
+Write a short (sequential) program that produces different output, depending on
+whether the semantics of nesting is flattened, closed or open.
+
+Closed
