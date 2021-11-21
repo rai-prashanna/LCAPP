@@ -25,3 +25,9 @@ Adding hadware logic is complicated.
  redesign.
 
 Exercise 2 Double-Ended Queue
+
+#Semantic 4 
+Trancttion is commited even after exception
+After exception the value of update :: 1 
+after unitincrement thread , the value of update :: 3 
+ after unitdecrement thread , the value of update :: 3 
