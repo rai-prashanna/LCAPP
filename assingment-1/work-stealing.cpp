@@ -16,9 +16,10 @@ DQueue job_queue[N];
 
 void processor(int n)
 {
-  while (!terminate)
+  while (!::terminate)
     {
       // TODO
+      sleep(n);
     }
 }
 
@@ -34,7 +35,7 @@ void user()
   unsigned int time = 0;
 
   // generates a new job about once per second
-  while (!terminate)
+  while (!::terminate)
     {
       int p = processor(gen);
       int d = duration(gen);
@@ -63,7 +64,7 @@ int main()
     }
 
   sleep(60);
-  terminate = true;
+  ::terminate = true;
 
   user_thread.join();
   for (int i=0; i<N; ++i)
