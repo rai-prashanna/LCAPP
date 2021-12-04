@@ -23,14 +23,14 @@
 %% -spec benchmarks() -> {musecs(), bm_results()}.
 benchmarks() -> 
   {ok, Problems} = file:consult(?PROBLEMS),
-  timer:tc(fun () -> benchmarks(Problems) end).
+  timer:tc(fun () -> benchmarks_parallel(Problems) end).
 
-benchmarks([])-> ok;
-benchmarks([Head|TailPuzzles]) ->
+benchmarks_parallel([])-> ok;
+benchmarks_parallel([Head|TailPuzzles]) ->
   {Name, M}=Head,  
   Parent=self(),
   spawn_link(fun()->
-  Parent!benchmarks(TailPuzzles) end),
+  Parent!benchmarks_parallel(TailPuzzles) end),
   [{Name, bm(fun() -> solve(M) end)}]++receive Ys-> Ys end.
 
 bm(F) ->
