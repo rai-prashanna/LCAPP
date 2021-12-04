@@ -42,15 +42,28 @@ repeat(N, F) when N > 0 ->
   _ = F(), repeat(N-1, F).
 
 
+%% solve Parallel
+
 %%
 %% solve all puzzles in the (hardcoded) input file
 %%
 -spec solve_all() -> [{name(), solution()}].
+solve_all_parallel([]) -> ok;
+solve_all_parallel([Head|TailPuzzles]) -> 
+  {Name, M}=Head,
+  Parent=self(),
+  spawn_link(fun()->
+  Parent!solve_all_parallel(TailPuzzles) end),
+  [{Name, solve(M)}]++receive Ys-> Ys end.  
+  
 solve_all() ->
   {ok, Puzzles} = file:consult(?PROBLEMS),
-  [{Name, solve(M)} || {Name, M} <- Puzzles].
+  solve_all_parallel(Puzzles).
+
+
+
 %%
-%% solve a Sudoku puzzle
+%% solve a Sudoku puzzle ;solve_all_parallel
 %%
 -spec solve(matrix()) -> solution().
 solve(M) ->
