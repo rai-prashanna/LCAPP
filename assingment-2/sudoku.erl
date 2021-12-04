@@ -71,9 +71,9 @@ solve_all() ->
 solve(M) ->
   Parent=self(),
   Ref = make_ref(),
-  spawn_link(fun() -> Parent!{Ref,fill(M)} end),
-  receive {Ref,Ys} -> 
-  Solution =solve_refined(refine(Ys)) end,
+  spawn_link(fun() -> Parent!{Ref,1,fill(M)} end),
+  receive {Ref,1,Ys} -> Parent!{Ref,2,solve_refined(refine(Ys))} end,
+  receive {Ref,2,Solution} -> 'ok' end,
   case valid_solution(Solution) of
     true -> Solution;
     false -> % in correct puzzles should never happen
