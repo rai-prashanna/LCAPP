@@ -55,29 +55,38 @@ solve_all_parallel([Head|TailPuzzles]) ->
   spawn_link(fun()->
   Parent!solve_all_parallel(TailPuzzles) end),
   [{Name, solve(M)}]++receive Ys-> Ys end.  
-  
+
 solve_all() ->
   {ok, Puzzles} = file:consult(?PROBLEMS),
   solve_all_parallel(Puzzles).
 
-
+%% solve_parallel
 
 %%
-%% solve a Sudoku puzzle ;solve_all_parallel
+%% solve a Sudoku puzzle 
 %%
 -spec solve(matrix()) -> solution().
+
+
 solve(M) ->
-  Solution = solve_refined(refine(fill(M))),
+  Parent=self(),
+  Ref = make_ref(),
+  spawn_link(fun() -> Parent!{Ref,fill(M)} end),
+  receive {Ref,Ys} -> 
+  Solution =solve_refined(refine(Ys)) end,
   case valid_solution(Solution) of
     true -> Solution;
     false -> % in correct puzzles should never happen
       exit({invalid_solution, Solution})
   end.
+
+
 solve_refined(M) ->
   case solved(M) of
     true -> M;
     false -> solve_one(guesses(M))
   end.
+  
 solve_one([]) -> no_solution;
 solve_one([M]) -> solve_refined(M);
 solve_one([M|Ms]) ->
