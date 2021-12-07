@@ -92,7 +92,24 @@ repeat(N, F) when N > 0 ->
 -spec solve_all() -> [{name(), solution()}].
 solve_all() ->
   {ok, Puzzles} = file:consult(?PROBLEMS),
-  [{Name, solve(M)} || {Name, M} <- Puzzles].
+  solve_all_parallel(Puzzles,[]).
+
+solve_all_parallel([],Accumaltor) -> Accumaltor;
+solve_all_parallel([],Accumaltor) -> 
+  [{Name, solve(M) end)}|Accumaltor];
+solve_all_parallel([FirstPuzzle,SecondPuzzle|TailPuzzles],Accumaltor)-> 
+  {Name1, M1}=FirstPuzzle,
+  {Name2, M2}=SecondPuzzle,
+  Parent=self(),
+  Tag = make_ref(),
+  spawn_link(fun()->
+  Parent!{Tag,solve_all_parallel(TailPuzzles,[{Name1,solve(M1)}|Accumaltor])} end),
+  Gs={Name2,solve(M2)},
+  receive {Tag,Ys}->  
+  [Gs|Ys]
+ end.
+
+
 
 %%
 %% solve a Sudoku puzzle
