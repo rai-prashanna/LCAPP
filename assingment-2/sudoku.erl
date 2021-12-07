@@ -62,14 +62,16 @@ benchmarks() ->
 benchmarks_parallel([],Accumaltor)-> Accumaltor;
 benchmarks_parallel([{Name,M}],Accumaltor)-> 
   [{Name,bm(fun() -> solve(M) end)}|Accumaltor];
-benchmarks_parallel([FirstPuzzle|TailPuzzles],Accumaltor)-> 
+benchmarks_parallel([FirstPuzzle,SecondPuzzle|TailPuzzles],Accumaltor)-> 
   {Name1, M1}=FirstPuzzle,
+  {Name2, M2}=SecondPuzzle,
   Parent=self(),
   Tag = make_ref(),
   spawn_link(fun()->
-  Parent!{Tag,benchmarks_parallel(TailPuzzles,[Accumaltor|{Name1,bm(fun() -> solve(M1) end)}])} end),
+  Parent!{Tag,benchmarks_parallel(TailPuzzles,[{Name1,bm(fun() -> solve(M1) end)}|Accumaltor])} end),
+  Gs={Name2,bm(fun() -> solve(M2) end)},
   receive {Tag,Ys}->  
-  Ys
+  [Gs|Ys]
  end.
 
 
