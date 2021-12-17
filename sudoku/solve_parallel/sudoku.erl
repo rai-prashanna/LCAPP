@@ -1,5 +1,5 @@
 -module(sudoku).
--export([benchmarks/0, solve_all/0, solve/1]).
+-export([benchmarks/0, solve_all/0, solve_parallel/1]).
 
 %% Your module must at least export these functions; uncomment the line below
 %% once you are done implementing them.
@@ -43,7 +43,7 @@ benchmarks() ->
 
 -spec benchmarks([puzzle()]) -> bm_results().
 benchmarks(Puzzles) ->
-  [{Name, bm(fun() -> solve(M) end)} || {Name, M} <- Puzzles].
+  [{Name, bm(fun() -> solve_parallel(M) end)} || {Name, M} <- Puzzles].
 
 bm(F) ->
   {T, _} = timer:tc(fun () -> repeat(?EXECUTIONS, F) end),
@@ -61,13 +61,13 @@ repeat(N, F) when N > 0 ->
 -spec solve_all() -> [{name(), solution()}].
 solve_all() ->
   {ok, Puzzles} = file:consult(?PROBLEMS),
-  [{Name, solve(M)} || {Name, M} <- Puzzles].
+  [{Name, solve_parallel(M)} || {Name, M} <- Puzzles].
 
 %%
 %% solve a Sudoku puzzle
 %%
--spec solve(matrix()) -> solution().
-solve(M) ->
+-spec solve_parallel(matrix()) -> solution().
+solve_parallel(M) ->
   Solution = solve_refined(refine1(fill(M))),
   case valid_solution(Solution) of
     true -> Solution;
@@ -274,13 +274,6 @@ prop_update() ->
 triples([A,B,C|D]) -> [[A,B,C]|triples(D)];
 triples([]) -> [].
 
-triples_parallel([],Acc) -> Acc;
-triples_parallel([A,B,C,D,E,F|G],Acc) -> 
-Parent=self(),Tag=make_ref(),
-spawn_link(fun()->
-Parent!{Tag,triples_parallel(D,[Acc|[D,E,F]])}end),
-receive {Tag,Ys} -> [[A,B,C]|Ys] end.
-
 blocks(no_solution) -> no_solution;
 blocks(M) ->
   Blocks = [triples(X) || X <- transpose([triples(Row) || Row <- M])],
@@ -312,5 +305,5 @@ test_benchmarks() ->
   {ok, Solutions} = file:consult(?SOLUTIONS),
   ZipF = fun ({Name, P}, {Name, S}) -> {P, S} end,
   Pairs = lists:zipwith(ZipF, Problems, Solutions), % assumes order is the same
-  [?_assertEqual(Sol, solve(Problem)) || {Problem, Sol} <- Pairs].
+  [?_assertEqual(Sol, solve_parallel(Problem)) || {Problem, Sol} <- Pairs].
 -endif.
