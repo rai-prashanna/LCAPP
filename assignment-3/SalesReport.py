@@ -43,9 +43,8 @@ printMapper(SalesRecordMapper)
 CategoryMapper = LoadCategoryMapper()
 
 
-def SubtotalingleafToIntermediateRoot(CategoryMapper):
-    mapper = {}
-    SalesReportMapper={}
+def subtotalingbottomToTopApproach(SalesRecordMapper,CategoryMapper):
+    SalesReportMapper = {}
     for itemName in SalesRecordMapper:
         subtotal=SalesRecordMapper[itemName]
         category=CategoryMapper[itemName]
@@ -54,22 +53,20 @@ def SubtotalingleafToIntermediateRoot(CategoryMapper):
             SalesReportMapper[category]=previous_value+subtotal
         else:
             SalesReportMapper[category] = subtotal
-    return SalesReportMapper
-
-
-SalesReportMapper=SubtotalingleafToIntermediateRoot(CategoryMapper)
-
-def SubtotalingIntermediateRootToroot1(SalesReportMapper,CategoryMapper):
-    mapper = {}
+    SubRoot={}
     for itemName in SalesReportMapper:
-        subtotal=SalesReportMapper[itemName]
-        category=CategoryMapper[itemName]
-        if category in SalesReportMapper:
-            previous_value=SalesReportMapper[category]
-            SalesReportMapper[category]=previous_value+subtotal
+        subtotal = SalesReportMapper[itemName]
+        category = CategoryMapper[itemName]
+        if category in SubRoot:
+            previous_value = SubRoot[category]
+            SubRoot[category] = previous_value + subtotal
         else:
-            SalesReportMapper[category] = subtotal
-        return SalesReportMapper
+            SubRoot[category] = subtotal
+    return SubRoot
 
-temp=SubtotalingIntermediateRootToroot1(SalesReportMapper,CategoryMapper)
-print(temp)
+
+
+
+result=subtotalingbottomToTopApproach(SalesRecordMapper,CategoryMapper)
+
+print(result)
