@@ -77,3 +77,4 @@ def wordcount(sc, inputFile, outputFile):
 # text.txt is also provided on Studium for testing.
 # will not work if count.out already exists!!
 wordcount(sc, "sales_data/sales.csv", "assingment1.out")
+

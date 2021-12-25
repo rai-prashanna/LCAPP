@@ -1,0 +1,31 @@
+Subcategory, Category
+Books, All
+Clothes, All
+Electrical, All
+White Goods, All
+Kids, Books
+Literature, Books
+Non-Fiction, Books
+Fantasy, Books
+Science, Non-Fiction
+Sociology, Non-Fiction
+Mens Clothes, Clothes
+Womens Clothes, Clothes
+Kids Clothes, Clothes
+Shorts, Mens Clothes
+Shirts, Mens Clothes
+Jeans, Womens Clothes
+Dresses, Womens Clothes
+Swimwear, Kids Clothes
+Undies, Kids Clothes
+Phones, Electrical
+Computers, Electrical
+Refrigerators, White Goods
+Dishwashers, White Goods
+Dryers, White Goods
+Washing Machines, White Goods
+Top Loaders, Washing Machines
+Front Loaders, Washing Machines
+
+{'Books': 63925008,
+'Non-Fiction': 6984337, 'White Goods': 342636804, 'Electrical': 147343294, 'Womens Clothes': 16866183, 'Washing Machines': 172329878, 'Kids Clothes': 1460385, 'Mens Clothes': 3748962, 'All': 63925008}

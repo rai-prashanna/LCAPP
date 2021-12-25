@@ -1,0 +1,22 @@
+Literature: 58232937
+Science: 5347624
+Kids: 3240662
+Refrigerators: 87572384
+Fantasy: 2451409
+Phones: 100585602
+Dresses: 11205175
+Dishwashers: 181849153
+Dryers: 73215267
+Computers: 46757692
+Front Loaders: 134725138
+Undies: 494478
+Swimwear: 965907
+Jeans: 5661008
+Shorts: 1700027
+Top Loaders: 37604740
+Sociology: 1636713
+Shirts: 2048935
+
+*********************
+'Books': 63925008, 'Non-Fiction': 6984337, 'White Goods': 342636804, 'Electrical': 147343294, 'Womens Clothes': 16866183, 'Washing Machines': 172329878, 'Kids Clothes': 1460385, 'Mens Clothes': 3748962}
+
