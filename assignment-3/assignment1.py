@@ -75,9 +75,11 @@ def wordcount(sc, inputFile, outputFile):
 
 # text.txt is also provided on Studium for testing.
 # will not work if count.out already exists!!
-wordcount(sc, "sales_data/sales.csv", "assingment1.out")
+
+#wordcount(sc, "sales_data/sales.csv", "assingment1.out")
 ItemCategoryMapper=helper.LoadItemIdItemName()
 SalesbyName=helper.MapItemIDtoName(ItemCategoryMapper)
 CategoryMapper = helper.LoadCategoryMapper()
-result=helper.subtotalingbottomToTopApproach(SalesbyName,CategoryMapper)
+salesofEachSubCategory=helper.SalesofEachSubCategory(SalesbyName,CategoryMapper)
+result=helper.salesOfEachCategory(salesofEachSubCategory,CategoryMapper)
 print(result)

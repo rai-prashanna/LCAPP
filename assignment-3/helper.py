@@ -40,26 +40,29 @@ def MapItemIDtoName(ItemCategoryMapper):
             SalesbyName[itemName] = int(sales)
     return SalesbyName
 
-def subtotalingbottomToTopApproach(SalesbyName,CategoryMapper):
-    SalesReportMapper = {}
+def SalesofEachSubCategory(SalesbyName,CategoryMapper):
+    SubCategorySales = {}
     for itemName in SalesbyName:
         subtotal=SalesbyName[itemName]
         category=CategoryMapper[itemName]
-        if category in SalesReportMapper:
-            previous_value=SalesReportMapper[category]
-            SalesReportMapper[category]=previous_value+subtotal
+        if category in SubCategorySales:
+            previous_value=SubCategorySales[category]
+            SubCategorySales[category]=previous_value+subtotal
         else:
-            SalesReportMapper[category] = subtotal
-    SubRoot={}
-    for itemName in SalesReportMapper:
-        subtotal = SalesReportMapper[itemName]
+            SubCategorySales[category] = subtotal
+    return SubCategorySales
+
+def salesOfEachCategory(SubCategorySales,CategoryMapper):
+    categorySales={}
+    for itemName in SubCategorySales:
+        subtotal = SubCategorySales[itemName]
         category = CategoryMapper[itemName]
-        if category in SubRoot:
-            previous_value = SubRoot[category]
-            SubRoot[category] = previous_value + subtotal
+        if category in categorySales:
+            previous_value = categorySales[category]
+            categorySales[category] = previous_value + subtotal
         else:
-            SubRoot[category] = subtotal
-    return SubRoot
+            categorySales[category] = subtotal
+    return categorySales
 
 # ItemCategoryMapper=LoadItemIdItemName()
 # SalesbyName=MapItemIDtoName(ItemCategoryMapper)
