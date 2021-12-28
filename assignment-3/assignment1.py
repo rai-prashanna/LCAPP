@@ -4,7 +4,7 @@ import os
 os.environ['JAVA_HOME']='/usr/lib/jvm/java-11-openjdk-amd64'
 
 from pyspark import SparkContext
-
+import helper
 sc = SparkContext("local", "Simple App")
 
 ## MapReduce Framework
@@ -44,7 +44,6 @@ def transform(input, mapper, reducer):
                 .flatMap(lambda kd: reducer().reduce(kd[0], kd[1]).result())
 
 
-### WordCount
 
 ##Mapper implementation
 class SalesMapper(Mapper):
@@ -77,4 +76,8 @@ def wordcount(sc, inputFile, outputFile):
 # text.txt is also provided on Studium for testing.
 # will not work if count.out already exists!!
 wordcount(sc, "sales_data/sales.csv", "assingment1.out")
-
+ItemCategoryMapper=helper.LoadItemIdItemName()
+SalesbyName=helper.MapItemIDtoName(ItemCategoryMapper)
+CategoryMapper = helper.LoadCategoryMapper()
+result=helper.subtotalingbottomToTopApproach(SalesbyName,CategoryMapper)
+print(result)

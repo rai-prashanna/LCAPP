@@ -61,11 +61,11 @@ def subtotalingbottomToTopApproach(SalesbyName,CategoryMapper):
             SubRoot[category] = subtotal
     return SubRoot
 
-
-SalesbyName=MapItemIDtoName(ItemCategoryMapper=LoadItemIdItemName())
-CategoryMapper = LoadCategoryMapper()
-result=subtotalingbottomToTopApproach(SalesbyName,CategoryMapper)
-print(result)
+# ItemCategoryMapper=LoadItemIdItemName()
+# SalesbyName=MapItemIDtoName(ItemCategoryMapper)
+# CategoryMapper = LoadCategoryMapper()
+# result=subtotalingbottomToTopApproach(SalesbyName,CategoryMapper)
+# print(result)
 
 
 def lineSplitterByWeek(line):
