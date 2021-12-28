@@ -1,19 +1,19 @@
 from datetime import datetime
 
-# def lineSplitterByWeek(line):
-#     givendatetime,itemid,sale=line.split(",")
-#     date_time_obj=datetime.strptime(givendatetime, '%Y-%m-%d %H:%M')
-#     if(date_time_obj.weekday()>4):
-#         # 0 for weekend
-#         return (itemid,0), sale
-#     else:
-#         # 1 for weekend
-#         return (itemid,1), sale
-#
-# def lineSplitterByMonth(line):
-#     givendatetime,itemid,sale=line.split(",")
-#     date_time_obj=datetime.strptime(givendatetime, '%Y-%m-%d %H:%M')
-#     return (itemid, date_time_obj.month), sale
+def lineSplitterByWeek(line):
+    givendatetime,itemid,sale=line.split(",")
+    date_time_obj=datetime.strptime(givendatetime, '%Y-%m-%d %H:%M')
+    if(date_time_obj.weekday()>4):
+        # 0 for weekend
+        return (itemid,0), sale
+    else:
+        # 1 for weekend
+        return (itemid,1), sale
+
+def lineSplitterByMonth(line):
+    givendatetime,itemid,sale=line.split(",")
+    date_time_obj=datetime.strptime(givendatetime, '%Y-%m-%d %H:%M')
+    return (itemid, date_time_obj.month), sale
 
 def getSubCategoryOfCategory(category):
     rawoutputfile = open("sales_data/categories.csv", "r")
