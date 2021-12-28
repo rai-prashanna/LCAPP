@@ -41,4 +41,5 @@ def getItemIdsFromSubCategory(subcategories):
 
 
 subclothes=getSubCategoryOfCategory("Clothes")
-getItemIdsFromSubCategory(subclothes)
+Subsubclothes=getItemIdsFromSubCategory(subclothes)
+print(Subsubclothes)
