@@ -22,10 +22,9 @@ from pyspark.sql.functions import *
 subclothes=helper.getSubCategoryOfCategory("Clothes")
 Subsubclothes=helper.getItemIdsFromSubCategory(subclothes)
 df=sales.where(~sales.Item_Id.isin(Subsubclothes))
-df.select(col("Time"),
+df1=df.select(col("Time"),
      month(col("Time")).alias("month"),col("Item_Id"),col("Price")
-  ).show()
+  ).groupBy("month","Item_Id").sum("Price").sort(desc("Item_Id")).withColumnRenamed("sum(Price)","Total").show(750, False)
 #sales.where(~sales.Item_Id.isin(Subsubclothes)).show(23000, False)
     #write.format("csv").mode("overwrite").save("myfile.csv")
-
-
+#groupBy("Item_Id").count().
