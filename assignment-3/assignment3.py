@@ -15,11 +15,17 @@ StructField("Item_Id", StringType()),\
 StructField("Price", IntegerType())])
 sales = spark.read.csv('sales_data/sales.csv', header = False,\
 timestampFormat='yyyy-MM-dd HH:mm', schema=schema)
-
+import pyspark.sql.functions as F
+from pyspark.sql.functions import *
 
 #my  code
 subclothes=helper.getSubCategoryOfCategory("Clothes")
 Subsubclothes=helper.getItemIdsFromSubCategory(subclothes)
-sales.where(~sales.Item_Id.isin(Subsubclothes)).show(23000, False)
+df=sales.where(~sales.Item_Id.isin(Subsubclothes))
+df.select(col("Time"),
+     month(col("Time")).alias("month"),col("Item_Id"),col("Price")
+  ).show()
+#sales.where(~sales.Item_Id.isin(Subsubclothes)).show(23000, False)
     #write.format("csv").mode("overwrite").save("myfile.csv")
+
 
