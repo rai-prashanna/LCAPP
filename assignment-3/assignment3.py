@@ -16,17 +16,30 @@ StructField("Price", IntegerType())])
 sales = spark.read.csv('sales_data/sales.csv', header = False,\
 timestampFormat='yyyy-MM-dd HH:mm', schema=schema)
 from pyspark.sql.functions import *
+import calendar
+
+def monthlysalesofSubcategory(monthlyItemSales):
+    def salesOfEachCategoryWithWeek(SubCategorySales, CategoryMapper):
+        categorySales = {}
+        for (itemName, week) in SubCategorySales:
+            subtotal = SubCategorySales[(itemName, week)]
+            category = CategoryMapper[itemName]
+            if (category, week) in categorySales:
+                previous_value = categorySales[(category, week)]
+                categorySales[(category, week)] = previous_value + subtotal
+            else:
+                categorySales[(category, week)] = subtotal
+        return categorySales
+
 
 #my  code
 subclothes=helper.getSubCategoryOfCategory("Clothes")
 Subsubclothes=helper.getItemIdsFromSubCategory(subclothes)
 df=sales.where(~sales.Item_Id.isin(Subsubclothes))
-df1=df.select(col("Time"),
+filterdataframe=df.select(col("Time"),
      month(col("Time")).alias("month"),col("Item_Id"),col("Price")
-  ).groupBy("month","Item_Id").sum("Price").sort(desc("Item_Id")).withColumnRenamed("sum(Price)","Total").collect()
-#print(df1)
-
-for row in df1:
-
-    print(row.Item_Id)
-
+  ).groupBy("month","Item_Id").sum("Price").sort(desc("Item_Id")).withColumnRenamed("sum(Price)","Sale").collect()
+monthlyItemSales=helper.convertIdtoItemName(filterdataframe)
+CategoryMapper = helper.LoadCategoryMapper()
+monthlySubCategorySales=helper.monthlysalesofSubcategory(monthlyItemSales,CategoryMapper)
+helper.salesOfEachCategoryWithWeek(monthlySubCategorySales,CategoryMapper)

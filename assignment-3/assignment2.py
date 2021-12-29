@@ -17,9 +17,9 @@ CategoryMapper = helper.LoadCategoryMapper()
 salesByname=helper.convertIdtoItemName(rawSalesrecord)
 print(salesByname)
 salesOFSubCategory=helper.salesofEachSubCategoryWithWeek(salesByname,CategoryMapper)
-output=helper.salesOfEachCategoryWithWeek(salesOFSubCategory,CategoryMapper)
-print(output)
-#output1=helper.display(output)
-#helper.printMapper(output1)
+print(salesOFSubCategory)
+totalsales=helper.salesOfEachCategoryWithWeek(salesOFSubCategory,CategoryMapper)
+print(totalsales)
+
 
 

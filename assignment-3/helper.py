@@ -1,5 +1,6 @@
 from datetime import datetime
 import re
+import calendar
 
 def printMapper(mapper):
     for key in mapper:
@@ -141,6 +142,37 @@ def getItemIdsFromSubCategory(subcategories):
             items.append(itemid)
     return items
 
-def monthlySalesReport(list):
-    return null
+def convertIdtoItemName(filterdataframe):
+    itemMapper=LoadItemIdItemName()
+    itemSales={}
+    for row in filterdataframe:
+        itemId=row.Item_Id
+        month=row.month
+        sales=row.Sale
+        itemName=itemMapper[itemId]
+        itemSales[(itemName,calendar.month_name[month])]=sales
+    return itemSales
 
+def monthlysalesofSubcategory(monthlyItemSales,CategoryMapper):
+    categorySales={}
+    for (itemName,month) in monthlyItemSales:
+        subtotal = monthlyItemSales[(itemName,month)]
+        category = CategoryMapper[itemName]
+        if (category,month) in categorySales:
+            previous_value = categorySales[(category,month)]
+            categorySales[(category,month)] = previous_value + subtotal
+        else:
+            categorySales[(category,month)] = subtotal
+    return categorySales
+
+def salesOfEachCategoryWithWeek(monthlySubCategorySales,CategoryMapper):
+    categorySales={}
+    for (itemName,month) in monthlySubCategorySales:
+        subtotal = monthlySubCategorySales[(itemName,month)]
+        category = CategoryMapper[itemName]
+        if (category,month) in categorySales:
+            previous_value = categorySales[(category,month)]
+            categorySales[(category,month)] = previous_value + subtotal
+        else:
+            categorySales[(category,month)] = subtotal
+    return categorySales
