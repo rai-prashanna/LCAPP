@@ -18,20 +18,6 @@ timestampFormat='yyyy-MM-dd HH:mm', schema=schema)
 from pyspark.sql.functions import *
 import calendar
 
-def monthlysalesofSubcategory(monthlyItemSales):
-    def salesOfEachCategoryWithWeek(SubCategorySales, CategoryMapper):
-        categorySales = {}
-        for (itemName, week) in SubCategorySales:
-            subtotal = SubCategorySales[(itemName, week)]
-            category = CategoryMapper[itemName]
-            if (category, week) in categorySales:
-                previous_value = categorySales[(category, week)]
-                categorySales[(category, week)] = previous_value + subtotal
-            else:
-                categorySales[(category, week)] = subtotal
-        return categorySales
-
-
 #my  code
 subclothes=helper.getSubCategoryOfCategory("Clothes")
 Subsubclothes=helper.getItemIdsFromSubCategory(subclothes)
@@ -42,4 +28,4 @@ filterdataframe=df.select(col("Time"),
 monthlyItemSales=helper.convertIdtoItemName(filterdataframe)
 CategoryMapper = helper.LoadCategoryMapper()
 monthlySubCategorySales=helper.monthlysalesofSubcategory(monthlyItemSales,CategoryMapper)
-helper.salesOfEachCategoryWithWeek(monthlySubCategorySales,CategoryMapper)
+monthlyCategorySales=helper.salesOfEachCategoryWithWeek(monthlySubCategorySales,CategoryMapper)

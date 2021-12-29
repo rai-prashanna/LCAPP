@@ -16,10 +16,10 @@ rawSalesrecord=rdd.reduceByKey(lambda x,y : int(x)+int(y)).sortByKey().collect()
 CategoryMapper = helper.LoadCategoryMapper()
 salesByname=helper.convertIdtoItemName(rawSalesrecord)
 print(salesByname)
-salesOFSubCategory=helper.salesofEachSubCategoryWithWeek(salesByname,CategoryMapper)
-print(salesOFSubCategory)
-totalsales=helper.salesOfEachCategoryWithWeek(salesOFSubCategory,CategoryMapper)
-print(totalsales)
+weeklysalesOFSubCategory=helper.weeklySalesSubCategory(salesByname,CategoryMapper)
+print(weeklysalesOFSubCategory)
+weeklySalesofCategory=helper.weeklysalesOfEachCategory(weeklysalesOFSubCategory,CategoryMapper)
+print(weeklySalesofCategory)
 
 
 

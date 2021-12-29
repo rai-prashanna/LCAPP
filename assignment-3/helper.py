@@ -53,7 +53,7 @@ def SalesofEachSubCategory(SalesbyName,CategoryMapper):
             SubCategorySales[category] = subtotal
     return SubCategorySales
 
-def salesofEachSubCategoryWithWeek(SalesbyName,CategoryMapper):
+def weeklySalesSubCategory(SalesbyName,CategoryMapper):
     SubCategorySales = {}
     for (itemName,week) in SalesbyName:
         subtotal=SalesbyName[(itemName,week)]
@@ -65,7 +65,7 @@ def salesofEachSubCategoryWithWeek(SalesbyName,CategoryMapper):
             SubCategorySales[(category,week)] = subtotal
     return SubCategorySales
 
-def salesOfEachCategoryWithWeek(SubCategorySales,CategoryMapper):
+def weeklysalesOfEachCategory(SubCategorySales,CategoryMapper):
     categorySales={}
     for (itemName,week) in SubCategorySales:
         subtotal = SubCategorySales[(itemName,week)]
@@ -165,7 +165,7 @@ def monthlysalesofSubcategory(monthlyItemSales,CategoryMapper):
             categorySales[(category,month)] = subtotal
     return categorySales
 
-def salesOfEachCategoryWithWeek(monthlySubCategorySales,CategoryMapper):
+def monthlysalesOfEachCategory(monthlySubCategorySales,CategoryMapper):
     categorySales={}
     for (itemName,month) in monthlySubCategorySales:
         subtotal = monthlySubCategorySales[(itemName,month)]
