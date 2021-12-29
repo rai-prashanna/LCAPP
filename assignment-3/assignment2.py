@@ -11,10 +11,10 @@ import helper
 
 sc = SparkContext("local", "Simple App")
 input = sc.textFile("sales_data/sales.csv")
-rdd = input.map(lambda line: (helper.lineSplitter(line)))
+rdd = input.map(lambda line: (helper.lineSplitterByWeek(line)))
 #output=rdd.reduceByKey(lambda x,y : int(x)+int(y)).groupByKey().map(lambda x : (x[0],list(x[1]))).collect()
 output=rdd.reduceByKey(lambda x,y : int(x)+int(y)).sortByKey().collect()
-
-print(output)
+output1=helper.display(output)
+helper.printMapper(output1)
 
 

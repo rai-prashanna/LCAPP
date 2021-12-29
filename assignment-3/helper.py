@@ -64,13 +64,6 @@ def salesOfEachCategory(SubCategorySales,CategoryMapper):
             categorySales[category] = subtotal
     return categorySales
 
-# ItemCategoryMapper=LoadItemIdItemName()
-# SalesbyName=MapItemIDtoName(ItemCategoryMapper)
-# CategoryMapper = LoadCategoryMapper()
-# result=subtotalingbottomToTopApproach(SalesbyName,CategoryMapper)
-# print(result)
-
-
 def lineSplitterByWeek(line):
     givendatetime,itemid,sale=line.split(",")
     date_time_obj=datetime.strptime(givendatetime, '%Y-%m-%d %H:%M')
@@ -80,6 +73,19 @@ def lineSplitterByWeek(line):
     else:
         # 1 for weekend
         return (itemid,1), sale
+
+def display(tuples):
+    itemMapper=LoadItemIdItemName()
+    itemSales={}
+    for tuple in tuples:
+        ((item_id,week),sales)=tuple
+        itemName=itemMapper[item_id]
+        if(week==0):
+            itemSales[(itemName,"weekend")]=sales
+        else:
+            itemSales[(itemName,"weekday")] = sales
+    return itemSales
+
 
 def lineSplitterByMonth(line):
     givendatetime,itemid,sale=line.split(",")
