@@ -52,6 +52,30 @@ def SalesofEachSubCategory(SalesbyName,CategoryMapper):
             SubCategorySales[category] = subtotal
     return SubCategorySales
 
+def salesofEachSubCategoryWithWeek(SalesbyName,CategoryMapper):
+    SubCategorySales = {}
+    for (itemName,week) in SalesbyName:
+        subtotal=SalesbyName[(itemName,week)]
+        category=CategoryMapper[itemName]
+        if (category,week) in SubCategorySales:
+            previous_value=SubCategorySales[(category,week)]
+            SubCategorySales[(category,week)]=previous_value+subtotal
+        else:
+            SubCategorySales[(category,week)] = subtotal
+    return SubCategorySales
+
+def salesOfEachCategoryWithWeek(SubCategorySales,CategoryMapper):
+    categorySales={}
+    for (itemName,week) in SubCategorySales:
+        subtotal = SubCategorySales[(itemName,week)]
+        category = CategoryMapper[itemName]
+        if category in categorySales:
+            previous_value = categorySales[(itemName,week)]
+            categorySales[(itemName,week)] = previous_value + subtotal
+        else:
+            categorySales[(itemName,week)] = subtotal
+    return categorySales
+
 def salesOfEachCategory(SubCategorySales,CategoryMapper):
     categorySales={}
     for itemName in SubCategorySales:
@@ -74,7 +98,7 @@ def lineSplitterByWeek(line):
         # 1 for weekend
         return (itemid,1), sale
 
-def display(tuples):
+def convertIdtoItemName(tuples):
     itemMapper=LoadItemIdItemName()
     itemSales={}
     for tuple in tuples:
@@ -85,6 +109,7 @@ def display(tuples):
         else:
             itemSales[(itemName,"weekday")] = sales
     return itemSales
+
 
 
 def lineSplitterByMonth(line):

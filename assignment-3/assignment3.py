@@ -15,7 +15,6 @@ StructField("Item_Id", StringType()),\
 StructField("Price", IntegerType())])
 sales = spark.read.csv('sales_data/sales.csv', header = False,\
 timestampFormat='yyyy-MM-dd HH:mm', schema=schema)
-import pyspark.sql.functions as F
 from pyspark.sql.functions import *
 
 #my  code
@@ -24,7 +23,10 @@ Subsubclothes=helper.getItemIdsFromSubCategory(subclothes)
 df=sales.where(~sales.Item_Id.isin(Subsubclothes))
 df1=df.select(col("Time"),
      month(col("Time")).alias("month"),col("Item_Id"),col("Price")
-  ).groupBy("month","Item_Id").sum("Price").sort(desc("Item_Id")).withColumnRenamed("sum(Price)","Total").show(750, False)
-#sales.where(~sales.Item_Id.isin(Subsubclothes)).show(23000, False)
-    #write.format("csv").mode("overwrite").save("myfile.csv")
-#groupBy("Item_Id").count().
+  ).groupBy("month","Item_Id").sum("Price").sort(desc("Item_Id")).withColumnRenamed("sum(Price)","Total").collect()
+#print(df1)
+
+for row in df1:
+
+    print(row.Item_Id)
+

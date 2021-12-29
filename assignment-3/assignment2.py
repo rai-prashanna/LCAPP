@@ -12,9 +12,13 @@ import helper
 sc = SparkContext("local", "Simple App")
 input = sc.textFile("sales_data/sales.csv")
 rdd = input.map(lambda line: (helper.lineSplitterByWeek(line)))
-#output=rdd.reduceByKey(lambda x,y : int(x)+int(y)).groupByKey().map(lambda x : (x[0],list(x[1]))).collect()
-output=rdd.reduceByKey(lambda x,y : int(x)+int(y)).sortByKey().collect()
-output1=helper.display(output)
-helper.printMapper(output1)
+rawSalesrecord=rdd.reduceByKey(lambda x,y : int(x)+int(y)).sortByKey().collect()
+CategoryMapper = helper.LoadCategoryMapper()
+salesByname=helper.convertIdtoItemName(rawSalesrecord)
+print(salesByname)
+output=helper.salesofEachSubCategoryWithWeek(salesByname,CategoryMapper)
+print(output)
+#output1=helper.display(output)
+#helper.printMapper(output1)
 
 
