@@ -69,11 +69,11 @@ def salesOfEachCategoryWithWeek(SubCategorySales,CategoryMapper):
     for (itemName,week) in SubCategorySales:
         subtotal = SubCategorySales[(itemName,week)]
         category = CategoryMapper[itemName]
-        if category in categorySales:
-            previous_value = categorySales[(itemName,week)]
-            categorySales[(itemName,week)] = previous_value + subtotal
+        if (category,week) in categorySales:
+            previous_value = categorySales[(category,week)]
+            categorySales[(category,week)] = previous_value + subtotal
         else:
-            categorySales[(itemName,week)] = subtotal
+            categorySales[(category,week)] = subtotal
     return categorySales
 
 def salesOfEachCategory(SubCategorySales,CategoryMapper):
