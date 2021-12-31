@@ -6,8 +6,9 @@ def printMapper(mapper):
     for key in mapper:
         print(f"{key}: {mapper.get(key)}")
 
-def LoadItemIdItemName():
-    rawoutputfile = open("sales_data/item_categories.csv", "r")
+def LoadItemIdItemName(src):
+    #"sales_data/item_categories.csv"
+    rawoutputfile = open(src, "r")
     mapper={}
     next(rawoutputfile)
     for line in rawoutputfile:
@@ -15,8 +16,9 @@ def LoadItemIdItemName():
         mapper[itemid] = itemname.rstrip("\n")
     return mapper
 
-def LoadCategoryMapper():
-    rawoutputfile = open("sales_data/categories.csv", "r")
+def LoadCategoryMapper(src):
+    #"sales_data/categories.csv"
+    rawoutputfile = open(src, "r")
     mapper={}
     next(rawoutputfile)
     for line in rawoutputfile:
@@ -25,9 +27,10 @@ def LoadCategoryMapper():
         mapper[trimmedKey] = Category
     return mapper
 
-def MapItemIDtoName(ItemCategoryMapper):
+def MapItemIDtoName(ItemCategoryMapper,src):
+    #"assingment1.out/part-00000"
     SalesbyName = {}
-    rawoutputfile = open("assingment1.out/part-00000", "r")
+    rawoutputfile = open(src, "r")
     for line in rawoutputfile:
         result = re.sub('[()]', '', line)
         itemid, sales = result.split(',')
@@ -99,8 +102,8 @@ def lineSplitterByWeek(line):
         # 1 for weekend
         return (itemid,1), sale
 
-def weeklyconvertIdtoItemName(tuples):
-    itemMapper=LoadItemIdItemName()
+def weeklyconvertIdtoItemName(tuples,src):
+    itemMapper=LoadItemIdItemName(src)
     itemSales={}
     for tuple in tuples:
         ((item_id,week),sales)=tuple

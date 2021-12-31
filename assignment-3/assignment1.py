@@ -1,12 +1,14 @@
 # next two lines are required if your default Java is > 1.8
 # the precise location depends on your machine
 import os
+import unittest
+
 os.environ['JAVA_HOME']='/usr/lib/jvm/java-11-openjdk-amd64'
 import shutil
 from pathlib import Path
 from pyspark import SparkContext
 import helper
-sc = SparkContext("local", "Simple App")
+#sc = SparkContext("local", "Simple App")
 
 ## MapReduce Framework
 def initialise(sc, inputFile, prepare):
@@ -80,14 +82,38 @@ def wordcount(sc, inputFile, outputFile):
 # text.txt is also provided on Studium for testing.
 # will not work if count.out already exists!!
 
-wordcount(sc, "sales_data/sales.csv", "assingment1.out")
-ItemCategoryMapper=helper.LoadItemIdItemName("sales_data/item_categories.csv")
-SalesbyName=helper.MapItemIDtoName(ItemCategoryMapper)
-CategoryMapper = helper.LoadCategoryMapper("sales_data/categories.csv")
-salesofEachSubCategory=helper.SalesofEachSubCategory(SalesbyName,CategoryMapper)
-salesOfEachCategory=helper.salesOfEachCategory(salesofEachSubCategory,CategoryMapper)
-print(SalesbyName)
-print("***************************************************")
-print(salesofEachSubCategory)
-print("***************************************************")
-print(salesOfEachCategory)
+# wordcount(sc, "sales_data/sales.csv", "assingment1.out")
+# ItemCategoryMapper=helper.LoadItemIdItemName("sales_data/item_categories.csv")
+# SalesbyName=helper.MapItemIDtoName(ItemCategoryMapper)
+# CategoryMapper = helper.LoadCategoryMapper("sales_data/categories.csv")
+# salesofEachSubCategory=helper.SalesofEachSubCategory(SalesbyName,CategoryMapper)
+# salesOfEachCategory=helper.salesOfEachCategory(salesofEachSubCategory,CategoryMapper)
+# print(SalesbyName)
+# print("***************************************************")
+# print(salesofEachSubCategory)
+# print("***************************************************")
+# print(salesOfEachCategory)
+
+
+
+
+class ITestsaleReport(unittest.TestCase):
+
+    def test_total_sale_report_of_Clothes(self):
+        """Positive Test-Case that checks total sale made by Clothes."""
+        print("*********************************************************************")
+        print("*********************************************************************")
+        print("testing****")
+        sc = SparkContext("local", "Simple App")
+        wordcount(sc, "test_data/sales.csv", "test.assingment1.out")
+        ItemCategoryMapper = helper.LoadItemIdItemName("test_data/item_categories.csv")
+        SalesbyName = helper.MapItemIDtoName(ItemCategoryMapper, "test.assingment1.out/part-00000")
+        CategoryMapper = helper.LoadCategoryMapper("test_data/categories.csv")
+        salesofEachSubCategory = helper.SalesofEachSubCategory(SalesbyName, CategoryMapper)
+        salesOfEachCategory = helper.salesOfEachCategory(salesofEachSubCategory, CategoryMapper)
+        print(SalesbyName)
+        print("***************************************************")
+        print(salesofEachSubCategory)
+        print("***************************************************")
+        print(salesOfEachCategory)
+        self.assertEqual(4800, salesOfEachCategory[('Clothes')])
