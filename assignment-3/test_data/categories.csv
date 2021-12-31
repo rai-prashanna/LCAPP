@@ -4,8 +4,25 @@ All,Clothes
 All,Electrical
 All,White Goods
 Books,Kids
+Books,Literature
+Books,Non-Fiction
+Books,Fantasy
+Non-Fiction,Science
+Non-Fiction,Sociology
 Clothes,Mens Clothes
+Clothes,Womens Clothes
+Clothes,Kids Clothes
 Mens Clothes,Shorts
+Mens Clothes,Shirts
+Womens Clothes,Jeans
+Womens Clothes,Dresses
+Kids Clothes,Swimwear
+Kids Clothes,Undies
 Electrical,Phones
+Electrical,Computers
+White Goods,Refrigerators
+White Goods,Dishwashers
 White Goods,Dryers
+White Goods,Washing Machines
+Washing Machines,Top Loaders
 Washing Machines,Front Loaders
