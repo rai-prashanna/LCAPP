@@ -99,7 +99,7 @@ def lineSplitterByWeek(line):
         # 1 for weekend
         return (itemid,1), sale
 
-def convertIdtoItemName(tuples):
+def weeklyconvertIdtoItemName(tuples):
     itemMapper=LoadItemIdItemName()
     itemSales={}
     for tuple in tuples:
