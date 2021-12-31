@@ -121,8 +121,9 @@ def lineSplitterByMonth(line):
     date_time_obj=datetime.strptime(givendatetime, '%Y-%m-%d %H:%M')
     return (itemid, date_time_obj.month), sale
 
-def getSubCategoryOfCategory(category):
-    rawoutputfile = open("sales_data/categories.csv", "r")
+def getSubCategoryOfCategory(category,src):
+    #"sales_data/categories.csv"
+    rawoutputfile = open(src, "r")
     subcategories = []
     next(rawoutputfile)
     for line in rawoutputfile:
@@ -135,8 +136,9 @@ def getSubCategoryOfCategory(category):
     return subcategories
 
 
-def getItemIdsFromSubCategory(subcategories):
-    rawoutputfile = open("sales_data/item_categories.csv", "r")
+def getItemIdsFromSubCategory(subcategories,src):
+    #"sales_data/item_categories.csv"
+    rawoutputfile = open(src, "r")
     items = []
     next(rawoutputfile)
     for line in rawoutputfile:
@@ -145,8 +147,8 @@ def getItemIdsFromSubCategory(subcategories):
             items.append(itemid)
     return items
 
-def convertIdtoItemName(filterdataframe):
-    itemMapper=LoadItemIdItemName()
+def convertIdtoItemName(filterdataframe,src):
+    itemMapper=LoadItemIdItemName(src)
     itemSales={}
     for row in filterdataframe:
         itemId=row.Item_Id

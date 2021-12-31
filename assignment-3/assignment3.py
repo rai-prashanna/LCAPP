@@ -19,14 +19,14 @@ from pyspark.sql.functions import *
 import calendar
 
 #my  code
-subclothes=helper.getSubCategoryOfCategory("Clothes")
-Subsubclothes=helper.getItemIdsFromSubCategory(subclothes)
+subclothes=helper.getSubCategoryOfCategory("Clothes","sales_data/categories.csv")
+Subsubclothes=helper.getItemIdsFromSubCategory(subclothes,"sales_data/item_categories.csv")
 df=sales.where(~sales.Item_Id.isin(Subsubclothes))
 filterdataframe=df.select(col("Time"),
      month(col("Time")).alias("month"),col("Item_Id"),col("Price")
   ).groupBy("month","Item_Id").sum("Price").sort(desc("Item_Id")).withColumnRenamed("sum(Price)","Sale").collect()
-monthlyItemSales=helper.convertIdtoItemName(filterdataframe)
-CategoryMapper = helper.LoadCategoryMapper()
+monthlyItemSales=helper.convertIdtoItemName(filterdataframe,"sales_data/item_categories.csv")
+CategoryMapper = helper.LoadCategoryMapper("sales_data/categories.csv")
 monthlySubCategorySales=helper.monthlysalesofSubcategory(monthlyItemSales,CategoryMapper)
 monthlyCategorySales=helper.monthlysalesOfEachCategory(monthlySubCategorySales,CategoryMapper)
 print(monthlyItemSales)
