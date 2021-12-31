@@ -2,7 +2,8 @@
 # the precise location depends on your machine
 import os
 os.environ['JAVA_HOME']='/usr/lib/jvm/java-11-openjdk-amd64'
-
+import shutil
+from pathlib import Path
 from pyspark import SparkContext
 import helper
 sc = SparkContext("local", "Simple App")
@@ -15,6 +16,9 @@ def initialise(sc, inputFile, prepare):
 
 def finalise(data, outputFile):
     """store data in given file"""
+    dirpath = Path(outputFile)
+    if dirpath.exists() and dirpath.is_dir():
+        shutil.rmtree(dirpath)
     data.saveAsTextFile(outputFile)
 
 class Mapper:
@@ -76,14 +80,14 @@ def wordcount(sc, inputFile, outputFile):
 # text.txt is also provided on Studium for testing.
 # will not work if count.out already exists!!
 
-#wordcount(sc, "sales_data/sales.csv", "assingment1.out")
-ItemCategoryMapper=helper.LoadItemIdItemName()
-SalesbyName=helper.MapItemIDtoName(ItemCategoryMapper)
-CategoryMapper = helper.LoadCategoryMapper()
-salesofEachSubCategory=helper.SalesofEachSubCategory(SalesbyName,CategoryMapper)
-salesOfEachCategory=helper.salesOfEachCategory(salesofEachSubCategory,CategoryMapper)
-print(SalesbyName)
-print("***************************************************")
-print(salesofEachSubCategory)
-print("***************************************************")
-print(salesOfEachCategory)
+wordcount(sc, "test_data/sales.csv", "test.assingment1.out")
+# ItemCategoryMapper=helper.LoadItemIdItemName()
+# SalesbyName=helper.MapItemIDtoName(ItemCategoryMapper)
+# CategoryMapper = helper.LoadCategoryMapper()
+# salesofEachSubCategory=helper.SalesofEachSubCategory(SalesbyName,CategoryMapper)
+# salesOfEachCategory=helper.salesOfEachCategory(salesofEachSubCategory,CategoryMapper)
+# print(SalesbyName)
+# print("***************************************************")
+# print(salesofEachSubCategory)
+# print("***************************************************")
+# print(salesOfEachCategory)
