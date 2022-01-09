@@ -202,7 +202,7 @@ def monthlysalesofSubcategory(monthlyItemSales,CategoryMapper):
         else:
             categorySales[(category,month)] = subtotal
     return categorySales
-
+#need fix
 def monthlysalesOfEachCategory(monthlySubCategorySales,CategoryMapper):
     categorySales={}
     for (itemName,month) in monthlySubCategorySales:
@@ -213,4 +213,20 @@ def monthlysalesOfEachCategory(monthlySubCategorySales,CategoryMapper):
             categorySales[(category,month)] = previous_value + subtotal
         else:
             categorySales[(category,month)] = subtotal
+
+
+    for (itemName, month) in categorySales:
+        if (itemName) in CategoryMapper:
+            parentitemaname = CategoryMapper[itemName]
+            intermediate_value = categorySales[(itemName, month)]
+            previous_value = categorySales[(parentitemaname, month)]
+            categorySales[(parentitemaname, month)] = previous_value + intermediate_value
+
+    for (itemName,month) in categorySales:
+        if (itemName, month) in monthlySubCategorySales:
+            intermediate_value = monthlySubCategorySales[(itemName, month)]
+            previous_value = categorySales[(itemName, month)]
+            categorySales[(itemName, month)] = previous_value + intermediate_value
     return categorySales
+
+
