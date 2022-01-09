@@ -66,6 +66,19 @@ def weeklySalesSubCategory(SalesbyName,CategoryMapper):
             SubCategorySales[(category,week)]=previous_value+subtotal
         else:
             SubCategorySales[(category,week)] = subtotal
+
+    return SubCategorySales
+
+def weeklySalessecondCategory(SalesbyName,CategoryMapper):
+    SubCategorySales = {}
+    for (itemName,week) in SalesbyName:
+        subtotal=SalesbyName[(itemName,week)]
+        category=CategoryMapper[itemName]
+        if (category,week) in SubCategorySales:
+            previous_value=SubCategorySales[(category,week)]
+            SubCategorySales[(category,week)]=previous_value+subtotal
+        else:
+            SubCategorySales[(category,week)] = subtotal
     return SubCategorySales
 
 def weeklysalesOfEachCategory(SubCategorySales,CategoryMapper):
@@ -78,6 +91,18 @@ def weeklysalesOfEachCategory(SubCategorySales,CategoryMapper):
             categorySales[(category,week)] = previous_value + subtotal
         else:
             categorySales[(category,week)] = subtotal
+    for (itemName,week) in categorySales:
+        if (itemName,week) in SubCategorySales:
+            intermediate_value = SubCategorySales[(itemName,week)]
+            previous_value=categorySales[(itemName,week) ]
+            categorySales[(itemName,week) ]=previous_value+intermediate_value
+            #okay
+    for (itemName,week) in categorySales:
+        if (itemName) in CategoryMapper:
+            parentitemaname = CategoryMapper[itemName]
+            intermediate_value = categorySales[(itemName,week)]
+            previous_value=categorySales[(parentitemaname,week) ]
+            categorySales[(parentitemaname,week) ]=previous_value+intermediate_value
     return categorySales
 
 def salesOfEachCategory(SubCategorySales,CategoryMapper):
@@ -99,7 +124,7 @@ def lineSplitterByWeek(line):
         # 0 for weekend
         return (itemid,0), sale
     else:
-        # 1 for weekend
+        # 1 for weekday
         return (itemid,1), sale
 
 def weeklyconvertIdtoItemName(tuples,src):
@@ -108,10 +133,18 @@ def weeklyconvertIdtoItemName(tuples,src):
     for tuple in tuples:
         ((item_id,week),sales)=tuple
         itemName=itemMapper[item_id]
-        if(week==0):
-            itemSales[(itemName,"weekend")]=sales
+        if week == 0:
+            if (itemName,"weekend") in itemSales:
+                previous_value = itemSales[(itemName,"weekend")]
+                itemSales[(itemName,"weekend")] = sales+previous_value
+            else:
+                itemSales[(itemName, "weekend")] = sales
         else:
-            itemSales[(itemName,"weekday")] = sales
+            if (itemName,"weekday") in itemSales:
+                previous_value = itemSales[(itemName,"weekday")]
+                itemSales[(itemName,"weekday")] = sales+previous_value
+            else:
+                itemSales[(itemName, "weekday")] = sales
     return itemSales
 
 
