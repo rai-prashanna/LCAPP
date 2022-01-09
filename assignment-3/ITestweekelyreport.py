@@ -19,5 +19,8 @@ class ITestweekelyreport(unittest.TestCase):
         print(weeklysalesOFSubCategory)
         weeklySalesofCategory = helper.weeklysalesOfEachCategory(weeklysalesOFSubCategory, CategoryMapper)
         print(weeklySalesofCategory)
-        self.assertEqual(4800, weeklySalesofCategory[('All', 'weekend')])
+        self.assertEqual(12400, weeklySalesofCategory[('All', 'weekend')])
+        self.assertEqual(3200, weeklySalesofCategory[('Books', 'weekend')])
+        self.assertEqual(8000, weeklySalesofCategory[('Clothes', 'weekday')])
+
 
