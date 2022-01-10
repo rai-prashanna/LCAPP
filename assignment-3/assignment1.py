@@ -74,26 +74,34 @@ class SalesReducer(Reducer):
 def wordcount(sc, inputFile, outputFile):
     rdd = initialise(sc, inputFile, lambda line: ("NoKey", line))
     result = transform(rdd, SalesMapper, SalesReducer)
-    # passing class NOT object (which would be WCMapper() etc)
     finalise(result, outputFile)
 
 
 # text.txt is also provided on Studium for testing.
 # will not work if count.out already exists!!
 
-def driver():
-    sc = SparkContext("local", "Simple App")
-    wordcount(sc, "sales_data/sales.csv", "assingment1.out")
-    ItemCategoryMapper = helper.LoadItemIdItemName("sales_data/item_categories.csv")
-    SalesbyName = helper.MapItemIDtoName(ItemCategoryMapper,"assingment1.out/part-00000")
-    CategoryMapper = helper.LoadCategoryMapper("sales_data/categories.csv")
-    salesofEachSubCategory = helper.SalesofEachSubCategory(SalesbyName, CategoryMapper)
-    salesOfEachCategory = helper.salesOfEachCategory(salesofEachSubCategory, CategoryMapper)
-    print(SalesbyName)
-    print("***************************************************")
-    print(salesofEachSubCategory)
-    print("***************************************************")
-    print(salesOfEachCategory)
-
-
-driver()
+sc = SparkContext("local", "Simple App")
+print("*********************************************************************")
+print("*********************************************************************")
+print("perform map reduce with sales data****")
+wordcount(sc, "sales_data/sales.csv", "assingment1.out")
+ItemCategoryMapper = helper.LoadItemIdItemName("sales_data/item_categories.csv")
+SalesbyName = helper.MapItemIDtoName(ItemCategoryMapper,"assingment1.out/part-00000")
+CategoryMapper = helper.LoadCategoryMapper("sales_data/categories.csv")
+salesofEachSubCategory = helper.SalesofEachSubCategory(SalesbyName, CategoryMapper)
+salesOfEachCategory = helper.salesOfEachCategory(salesofEachSubCategory, CategoryMapper)
+print(SalesbyName)
+print("***************************************************")
+print("Electrical:" + str(salesofEachSubCategory[('Electrical')]))
+print("***************************************************")
+print("Clothes:" + str(salesOfEachCategory[('Clothes')]))
+print("Books:" + str(salesOfEachCategory[('Books')]))
+print("White Goods:" + str(salesOfEachCategory[('White Goods')]))
+print("Clothes:" + str(salesOfEachCategory[('Clothes')]))
+print("Mens Clothes:" + str(salesofEachSubCategory[('Mens Clothes')]))
+print("Womens Clothes:" + str(salesofEachSubCategory[('Womens Clothes')]))
+print("All :" + str(salesOfEachCategory[('All')]))
+print("*********************************************************************")
+print("*********************************************************************")
+print("perform map reduce with test data****")
+wordcount(sc, "test_data/sales.csv", "test.assingment1.out")
