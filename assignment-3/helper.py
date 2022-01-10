@@ -54,23 +54,8 @@ def SalesofEachSubCategory(SalesbyName,CategoryMapper):
             SubCategorySales[category]=previous_value+subtotal
         else:
             SubCategorySales[category] = subtotal
-    print(SubCategorySales)
     return SubCategorySales
-
 def weeklySalesSubCategory(SalesbyName,CategoryMapper):
-    SubCategorySales = {}
-    for (itemName,week) in SalesbyName:
-        subtotal=SalesbyName[(itemName,week)]
-        category=CategoryMapper[itemName]
-        if (category,week) in SubCategorySales:
-            previous_value=SubCategorySales[(category,week)]
-            SubCategorySales[(category,week)]=previous_value+subtotal
-        else:
-            SubCategorySales[(category,week)] = subtotal
-
-    return SubCategorySales
-
-def weeklySalessecondCategory(SalesbyName,CategoryMapper):
     SubCategorySales = {}
     for (itemName,week) in SalesbyName:
         subtotal=SalesbyName[(itemName,week)]
@@ -93,17 +78,17 @@ def weeklysalesOfEachCategory(SubCategorySales,CategoryMapper):
         else:
             categorySales[(category,week)] = subtotal
     for (itemName,week) in categorySales:
-        if (itemName,week) in SubCategorySales:
-            intermediate_value = SubCategorySales[(itemName,week)]
-            previous_value=categorySales[(itemName,week) ]
-            categorySales[(itemName,week) ]=previous_value+intermediate_value
-            #okay
-    for (itemName,week) in categorySales:
-        if (itemName) in CategoryMapper:
-            parentitemaname = CategoryMapper[itemName]
+        if itemName in CategoryMapper:
+            parentName=CategoryMapper[itemName]
             intermediate_value = categorySales[(itemName,week)]
-            previous_value=categorySales[(parentitemaname,week) ]
-            categorySales[(parentitemaname,week) ]=previous_value+intermediate_value
+            previous_value=categorySales[(parentName,week)]
+            categorySales[(parentName,week)]=previous_value+intermediate_value
+    for (itemName,week) in SubCategorySales:
+        subtotal = SubCategorySales[(itemName,week)]
+        category = CategoryMapper[itemName]
+        if (category,week) in SubCategorySales:
+            previous_value = SubCategorySales[(category,week)]
+            categorySales[(category,week)] = previous_value + subtotal
     return categorySales
 
 def salesOfEachCategory(SubCategorySales,CategoryMapper):

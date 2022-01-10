@@ -19,10 +19,17 @@ CategoryMapper = helper.LoadCategoryMapper("sales_data/categories.csv")
 salesByname=helper.weeklyconvertIdtoItemName(rawSalesrecord,"sales_data/item_categories.csv")
 print(salesByname)
 weeklysalesOFSubCategory=helper.weeklySalesSubCategory(salesByname,CategoryMapper)
-print(weeklysalesOFSubCategory)
 weeklySalesofCategory=helper.weeklysalesOfEachCategory(weeklysalesOFSubCategory,CategoryMapper)
-print(weeklySalesofCategory)
-
+print("***************************************************")
+print("Electrical,weekday:" + str(weeklysalesOFSubCategory[('Electrical', 'weekday')]))
+print("***************************************************")
+print("Clothes,'weekday':" + str(weeklySalesofCategory[('Clothes', 'weekday')]))
+print("Books,'weekday':" + str(weeklySalesofCategory[('Books', 'weekday')]))
+print("White Goods,'weekday':" + str(weeklySalesofCategory[('White Goods', 'weekday')]))
+print("Clothes,'weekday':" + str(weeklySalesofCategory[('Clothes', 'weekday')]))
+print("Mens Clothes,'weekday':" + str(weeklysalesOFSubCategory[('Mens Clothes', 'weekday')]))
+print("Womens Clothes,'weekday':" + str(weeklysalesOFSubCategory[('Womens Clothes', 'weekday')]))
+print("All ,'weekday':" + str(weeklySalesofCategory[('All', 'weekday')]))
 
 
 
