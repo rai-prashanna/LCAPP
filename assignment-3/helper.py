@@ -54,6 +54,7 @@ def SalesofEachSubCategory(SalesbyName,CategoryMapper):
             SubCategorySales[category]=previous_value+subtotal
         else:
             SubCategorySales[category] = subtotal
+    print(SubCategorySales)
     return SubCategorySales
 
 def weeklySalesSubCategory(SalesbyName,CategoryMapper):
@@ -115,8 +116,33 @@ def salesOfEachCategory(SubCategorySales,CategoryMapper):
             categorySales[category] = previous_value + subtotal
         else:
             categorySales[category] = subtotal
+    for itemName in categorySales:
+        if itemName in CategoryMapper:
+            parentName=CategoryMapper[itemName]
+            intermediate_value = categorySales[itemName]
+            previous_value=categorySales[parentName]
+            categorySales[parentName]=previous_value+intermediate_value
+    for itemName in SubCategorySales:
+        subtotal = SubCategorySales[itemName]
+        category = CategoryMapper[itemName]
+        if category in SubCategorySales:
+            previous_value = SubCategorySales[category]
+            categorySales[category] = previous_value + subtotal
     return categorySales
 
+
+
+def salesOfAllCategory(categorySales,CategoryMapper):
+    categoryAllSales={}
+    for itemName in categorySales:
+        subtotal = categorySales[itemName]
+        category = CategoryMapper[itemName]
+        if category in categorySales:
+            previous_value = categorySales[category]
+            categorySales[category] = previous_value + subtotal
+        else:
+            categorySales[category] = subtotal
+    return categorySales
 def lineSplitterByWeek(line):
     givendatetime,itemid,sale=line.split(",")
     date_time_obj=datetime.strptime(givendatetime, '%Y-%m-%d %H:%M')

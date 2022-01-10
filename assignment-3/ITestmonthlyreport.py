@@ -23,17 +23,18 @@ class ITestmonthlyreport(unittest.TestCase):
         schema = StructType([StructField("Time", TimestampType()), \
                              StructField("Item_Id", StringType()), \
                              StructField("Price", IntegerType())])
-        sales = spark.read.csv('sales_data/sales.csv', header=False, \
+        sales = spark.read.csv('test_data/sales.csv', header=False, \
                                timestampFormat='yyyy-MM-dd HH:mm', schema=schema)
-        subclothes = helper.getSubCategoryOfCategory("Clothes", "sales_data/categories.csv")
-        Subsubclothes = helper.getItemIdsFromSubCategory(subclothes, "sales_data/item_categories.csv")
+        subclothes = helper.getSubCategoryOfCategory("Clothes", "test_data/categories.csv")
+        Subsubclothes = helper.getItemIdsFromSubCategory(subclothes, "test_data/item_categories.csv")
         df = sales.where(~sales.Item_Id.isin(Subsubclothes))
         filterdataframe = df.select(col("Time"),
                                     month(col("Time")).alias("month"), col("Item_Id"), col("Price")
                                     ).groupBy("month", "Item_Id").sum("Price").sort(desc("Item_Id")).withColumnRenamed(
             "sum(Price)", "Sale").collect()
-        monthlyItemSales = helper.convertIdtoItemName(filterdataframe, "sales_data/item_categories.csv")
-        CategoryMapper = helper.LoadCategoryMapper("sales_data/categories.csv")
+        monthlyItemSales = helper.convertIdtoItemName(filterdataframe, "test_data/item_categories.csv")
+        print(monthlyItemSales)
+        CategoryMapper = helper.LoadCategoryMapper("test_data/categories.csv")
         monthlySubCategorySales = helper.monthlysalesofSubcategory(monthlyItemSales, CategoryMapper)
         monthlyCategorySales = helper.monthlysalesOfEachCategory(monthlySubCategorySales, CategoryMapper)
         print(monthlyItemSales)
@@ -41,4 +42,6 @@ class ITestmonthlyreport(unittest.TestCase):
         print(monthlySubCategorySales)
         print("**************************")
         print(monthlyCategorySales)
-        self.assertEqual(4411680, monthlyCategorySales[('All','May')])
+        self.assertEqual(800, monthlyCategorySales[('Books','May')])
+        self.assertEqual(1800, monthlyCategorySales[('All','July')])
+        self.assertEqual(500, monthlyCategorySales[('White Goods','October')])
