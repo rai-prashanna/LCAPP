@@ -213,31 +213,27 @@ def monthlysalesofSubcategory(monthlyItemSales,CategoryMapper):
         else:
             categorySales[(category,month)] = subtotal
     return categorySales
-#need fix
-def monthlysalesOfEachCategory(monthlySubCategorySales,CategoryMapper):
+
+def monthlysalesOfEachCategory(SubCategorySales,CategoryMapper):
     categorySales={}
-    for (itemName,month) in monthlySubCategorySales:
-        subtotal = monthlySubCategorySales[(itemName,month)]
+    for (itemName,month) in SubCategorySales:
+        subtotal = SubCategorySales[(itemName,month)]
         category = CategoryMapper[itemName]
         if (category,month) in categorySales:
             previous_value = categorySales[(category,month)]
             categorySales[(category,month)] = previous_value + subtotal
         else:
             categorySales[(category,month)] = subtotal
-
-
-    for (itemName, month) in categorySales:
-        if (itemName) in CategoryMapper:
-            parentitemaname = CategoryMapper[itemName]
-            intermediate_value = categorySales[(itemName, month)]
-            previous_value = categorySales[(parentitemaname, month)]
-            categorySales[(parentitemaname, month)] = previous_value + intermediate_value
-
     for (itemName,month) in categorySales:
-        if (itemName, month) in monthlySubCategorySales:
-            intermediate_value = monthlySubCategorySales[(itemName, month)]
-            previous_value = categorySales[(itemName, month)]
-            categorySales[(itemName, month)] = previous_value + intermediate_value
+        if itemName in CategoryMapper:
+            parentName=CategoryMapper[itemName]
+            intermediate_value = categorySales[(itemName,month)]
+            previous_value=categorySales[(parentName,month)]
+            categorySales[(parentName,month)]=previous_value+intermediate_value
+    for (itemName,month) in SubCategorySales:
+        subtotal = SubCategorySales[(itemName,month)]
+        category = CategoryMapper[itemName]
+        if (category,month) in SubCategorySales:
+            previous_value = SubCategorySales[(category,month)]
+            categorySales[(category,month)] = previous_value + subtotal
     return categorySales
-
-
